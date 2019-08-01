@@ -29,6 +29,7 @@ class Portfolio extends Component {
   async _requestOwnedStocks(){
     let authToken = await AsyncStorage.getItem('auth_token');
     let authEmail = await AsyncStorage.getItem('auth_email');
+    console.log('fetching');
     fetch(
       config.baseUrl + '/owned_stocks', {
       method: 'GET',
@@ -40,13 +41,17 @@ class Portfolio extends Component {
       }
     })
     .then( response => {
+      console.log('response');
+      console.log(response);
       if (!response.ok) { throw response }
+      console.log('yes');
       return response.json();
     })
     .then( json => {
       let newState = Object.assign(this.state);
       newState.summary.total_value = json["summary"]["total_value"];
       newState.data = json["stocks"];
+      console.log(json["stocks"]);
       newState.isLoading = false;
       if (!this.state.isRequesting){
         newState.isRequesting = true;
